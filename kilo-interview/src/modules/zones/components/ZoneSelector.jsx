@@ -5,13 +5,6 @@ const ZoneSelector = () => {
   const { zones, loading } = useZones();
   const [selectedZones, setSelectedZones] = useState([]);
 
-  const handleZoneChange = (zoneId) => {
-    setSelectedZones((prev) =>
-      prev.includes(zoneId)
-        ? prev.filter((id) => id !== zoneId)
-        : [...prev, zoneId],
-    );
-  };
 
   if (loading) {
     return <div>Loading zones...</div>;
