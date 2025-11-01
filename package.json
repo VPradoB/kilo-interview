@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "exec": "tsx -r tsconfig-paths/register",
+    "preview": "vite preview",
+    "script": "tsx --tsconfig tsconfig.app.json -r tsconfig-paths/register",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@mantine/core": "^8.3.5",
@@ -17,6 +21,7 @@
     "@mantine/modals": "^8.3.5",
     "@mantine/notifications": "^8.3.5",
     "@mantine/nprogress": "^8.3.5",
+    "axios": "^1.13.1",
     "dayjs": "^1.11.18",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
@@ -27,16 +32,21 @@
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react-swc": "^4.1.0",
+    "@vitest/ui": "^4.0.6",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
+    "happy-dom": "^20.0.10",
     "postcss": "^8.5.6",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.20.6",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
-    "vite": "npm:rolldown-vite@7.1.14"
+    "vite": "npm:rolldown-vite@7.1.14",
+    "vitest": "^4.0.6"
   },
   "pnpm": {
     "overrides": {
