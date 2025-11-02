@@ -11,6 +11,14 @@ vi.mock('@shared/config', () => ({
 }))
 
 describe('ApplicationsRepository', () => {
+  const mockParams = {
+    zone: 1,
+    is_awarded: false,
+    page: 1,
+    limit: 10,
+    date: new Date('2024-01-01')
+  }
+
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -61,9 +69,9 @@ describe('ApplicationsRepository', () => {
 
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
 
-      const result = await ApplicationsRepo.get()
+      const result = await ApplicationsRepo.get(mockParams)
 
-      expect(axios.get).toHaveBeenCalledWith('http://test-api.com/applications')
+      expect(axios.get).toHaveBeenCalledWith('http://test-api.com/applications', { params: mockParams })
       expect(result.data).toHaveLength(2)
       expect(result.data[0]).toBeInstanceOf(Application)
       expect(result.data[1]).toBeInstanceOf(Application)
@@ -103,7 +111,7 @@ describe('ApplicationsRepository', () => {
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
       const createSpy = vi.spyOn(Application, 'create')
 
-      await ApplicationsRepo.get()
+      await ApplicationsRepo.get(mockParams)
 
       expect(createSpy).toHaveBeenCalledWith(
         1,
@@ -151,7 +159,7 @@ describe('ApplicationsRepository', () => {
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
       const createSpy = vi.spyOn(Application, 'create')
 
-      await ApplicationsRepo.get()
+      await ApplicationsRepo.get(mockParams)
 
       expect(createSpy).toHaveBeenCalledWith(
         1,
@@ -184,7 +192,7 @@ describe('ApplicationsRepository', () => {
 
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
 
-      const result = await ApplicationsRepo.get()
+      const result = await ApplicationsRepo.get(mockParams)
 
       expect(result.data).toHaveLength(0)
       expect(result.pagination).toEqual(mockApiResponse.pagination)
@@ -196,7 +204,7 @@ describe('ApplicationsRepository', () => {
 
       const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
-      await expect(ApplicationsRepo.get()).rejects.toThrow('Network error')
+      await expect(ApplicationsRepo.get(mockParams)).rejects.toThrow('Network error')
       expect(consoleLogSpy).toHaveBeenCalledWith(mockError)
 
       consoleLogSpy.mockRestore()
@@ -245,7 +253,7 @@ describe('ApplicationsRepository', () => {
 
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
 
-      const result = await ApplicationsRepo.get()
+      const result = await ApplicationsRepo.get(mockParams)
 
       expect(result.data).toHaveLength(2)
       expect(result.data[0]).toBeInstanceOf(Application)

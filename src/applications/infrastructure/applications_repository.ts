@@ -5,9 +5,17 @@ import axios from "axios"
 import { API_URL } from "@shared/config"
 import { Application } from "@applications/domain/entity/application"
 
-export const get = async (): Promise<PaginatedResponse<Application>> => {
+interface GetParams {
+  zone: number;
+  is_awarded: boolean;
+  page: number;
+  limit: number;
+  date: Date
+
+}
+export const get = async (params: GetParams): Promise<PaginatedResponse<Application>> => {
   try {
-    const response = await axios.get<APIPaginatedResponse<ApplicationResponseItem>>(`${API_URL}/applications`)
+    const response = await axios.get<APIPaginatedResponse<ApplicationResponseItem>>(`${API_URL}/applications`, { params: params })
     const data = Object.values(response.data.data).flatMap(obj => Object.values(obj))
     const applicactions = data.map(obj => {
       return Application.create(
@@ -31,5 +39,4 @@ export const get = async (): Promise<PaginatedResponse<Application>> => {
     throw error
   }
 }
-
 
