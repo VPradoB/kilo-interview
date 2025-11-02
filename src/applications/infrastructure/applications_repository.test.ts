@@ -16,7 +16,7 @@ describe('ApplicationsRepository', () => {
   })
 
   describe('get', () => {
-    it('debería obtener y transformar las aplicaciones correctamente', async () => {
+    it('should fetch and transform applications correctly', async () => {
       const mockApiResponse: APIPaginatedResponse<ApplicationResponseItem> = {
         data: [
           {
@@ -70,7 +70,7 @@ describe('ApplicationsRepository', () => {
       expect(result.pagination).toEqual(mockApiResponse.pagination)
     })
 
-    it('debería transformar award_id -1 a null', async () => {
+    it('should transform award_id -1 to null', async () => {
       const mockApiResponse: APIPaginatedResponse<ApplicationResponseItem> = {
         data: [
           {
@@ -118,7 +118,7 @@ describe('ApplicationsRepository', () => {
       )
     })
 
-    it('debería mantener award_id cuando no es -1', async () => {
+    it('should keep award_id when it is not -1', async () => {
       const mockApiResponse: APIPaginatedResponse<ApplicationResponseItem> = {
         data: [
           {
@@ -166,7 +166,7 @@ describe('ApplicationsRepository', () => {
       )
     })
 
-    it('debería manejar un arreglo vacío de aplicaciones', async () => {
+    it('should handle an empty array of applications', async () => {
       const mockApiResponse: APIPaginatedResponse<ApplicationResponseItem> = {
         data: [],
         pagination: {
@@ -190,7 +190,7 @@ describe('ApplicationsRepository', () => {
       expect(result.pagination).toEqual(mockApiResponse.pagination)
     })
 
-    it('debería propagar el error cuando axios falla', async () => {
+    it('should propagate the error when axios fails', async () => {
       const mockError = new Error('Network error')
       vi.mocked(axios.get).mockRejectedValue(mockError)
 
@@ -202,7 +202,7 @@ describe('ApplicationsRepository', () => {
       consoleLogSpy.mockRestore()
     })
 
-    it('debería procesar múltiples aplicaciones en objetos anidados', async () => {
+    it('should process multiple applications in nested objects', async () => {
       const mockApiResponse: APIPaginatedResponse<ApplicationResponseItem> = {
         data: [
           {
