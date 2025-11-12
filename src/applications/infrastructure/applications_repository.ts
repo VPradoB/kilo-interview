@@ -13,6 +13,7 @@ interface GetParams {
   date: Date
 
 }
+
 export const get = async (params: GetParams): Promise<PaginatedResponse<Application>> => {
   try {
     const response = await axios.get<APIPaginatedResponse<ApplicationResponseItem>>(`${API_URL}/applications`, { params: params })
