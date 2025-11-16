@@ -1,3 +1,5 @@
+import type { APIResponse } from "./response.types";
+
 interface PaginationInfo {
   page: number;
   limit: number;
@@ -10,8 +12,7 @@ interface PaginationInfo {
   previous_page: boolean;
 }
 
-export interface APIPaginatedResponse<T> {
-  data: Record<string, T>[];
+export interface APIPaginatedResponse<T> extends APIResponse<T> {
   pagination: PaginationInfo;
 }
 

@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import axios from 'axios'
-import * as ApplicationsRepo from '@applications/infrastructure/applications_repository'
+import { ApplicationRepository } from '@applications/infrastructure/applications_repository'
 import { Application } from '@applications/domain/entity/application'
-import type { APIPaginatedResponse } from '@/shared/api/types/pagination.types'
+import type { APIPaginatedResponse } from '@/shared/domain/api/types/pagination.types'
 import type { ApplicationResponseItem } from '@applications/infrastructure/types/applications.types'
 
 vi.mock('axios')
@@ -10,7 +10,21 @@ vi.mock('@shared/config', () => ({
   API_URL: 'http://test-api.com'
 }))
 
-describe('ApplicationsRepository', () => {
+describe('ApplicationRepository', () => {
+  let repo: ApplicationRepository
+
+  const mockParams = {
+    zone: 1,
+    is_awarded: false,
+    page: 1,
+    limit: 10,
+    date: new Date('2024-01-01')
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    repo = new ApplicationRepository()
+  })
   const mockParams = {
     zone: 1,
     is_awarded: false,
@@ -69,7 +83,7 @@ describe('ApplicationsRepository', () => {
 
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
 
-      const result = await ApplicationsRepo.get(mockParams)
+      const result = await repo.get(mockParams)
 
       expect(axios.get).toHaveBeenCalledWith('http://test-api.com/applications', { params: mockParams })
       expect(result.data).toHaveLength(2)
@@ -111,7 +125,7 @@ describe('ApplicationsRepository', () => {
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
       const createSpy = vi.spyOn(Application, 'create')
 
-      await ApplicationsRepo.get(mockParams)
+      await repo.get(mockParams)
 
       expect(createSpy).toHaveBeenCalledWith(
         1,
@@ -159,7 +173,7 @@ describe('ApplicationsRepository', () => {
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
       const createSpy = vi.spyOn(Application, 'create')
 
-      await ApplicationsRepo.get(mockParams)
+      await repo.get(mockParams)
 
       expect(createSpy).toHaveBeenCalledWith(
         1,
@@ -192,7 +206,7 @@ describe('ApplicationsRepository', () => {
 
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
 
-      const result = await ApplicationsRepo.get(mockParams)
+      const result = await repo.get(mockParams)
 
       expect(result.data).toHaveLength(0)
       expect(result.pagination).toEqual(mockApiResponse.pagination)
@@ -202,9 +216,9 @@ describe('ApplicationsRepository', () => {
       const mockError = new Error('Network error')
       vi.mocked(axios.get).mockRejectedValue(mockError)
 
-      const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+      const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => { })
 
-      await expect(ApplicationsRepo.get(mockParams)).rejects.toThrow('Network error')
+      await expect(repo.get(mockParams)).rejects.toThrow('Network error')
       expect(consoleLogSpy).toHaveBeenCalledWith(mockError)
 
       consoleLogSpy.mockRestore()
@@ -253,7 +267,7 @@ describe('ApplicationsRepository', () => {
 
       vi.mocked(axios.get).mockResolvedValue({ data: mockApiResponse })
 
-      const result = await ApplicationsRepo.get(mockParams)
+      const result = await repo.get(mockParams)
 
       expect(result.data).toHaveLength(2)
       expect(result.data[0]).toBeInstanceOf(Application)
